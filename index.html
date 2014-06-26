@@ -58,7 +58,11 @@
   </div>
 </div>
 
-<div class="minutes text-center">Starts at: 03:00h</div>
+<div>
+{{ match_progress }}
+</div>
+
+<div class="minutes text-center"> {{ start_time }}</div>
 
 <div class="flags text-center">
 	<div class="pull-left">
@@ -86,9 +90,11 @@ $.ajax({
 }).done(function(matches){
 
 matches.forEach(function(match){
-// console.log(matches);
+    if (match["status"] === "future"){
+
     var homeTeam = match["home_team"];
     var awayTeam = match["away_team"];
+    var start_time = "Match starts at: 13:00h"
 
     var source   = $("#entry-template").html();
 	var template = Handlebars.compile(source);
@@ -99,9 +105,40 @@ matches.forEach(function(match){
         away_goals: awayTeam["goals"],
         home_flag: homeTeam["code"],
         away_flag: awayTeam["code"],
+        start_time : start_time,
     }
 	var html    = template(context);
 	$("#body").append(html);
+}
+else {
+    today = new Date();
+    today = today.toJSON();
+    var now = Date.parse(today);
+
+    var match_time = Date.parse(match["datetime"]);
+    console.log(match_time);
+    var end_time = (match_time + 5400000) - now;
+    console.log(end_time);
+
+
+    var homeTeam = match["home_team"];
+    var awayTeam = match["away_team"];
+
+    var source   = $("#entry-template").html();
+    var template = Handlebars.compile(source);
+    var context = {
+        home_team: homeTeam["country"],
+        away_team: awayTeam["country"],
+        home_goals: homeTeam["goals"],
+        away_goals: awayTeam["goals"],
+        home_flag: homeTeam["code"],
+        away_flag: awayTeam["code"],
+        match_progress : end_time,
+
+    }
+    var html    = template(context);
+    $("#body").append(html);
+}
 });
 });
 </script>
