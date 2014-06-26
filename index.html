@@ -47,17 +47,18 @@
 
 <div class="minutes text-center">Starts at: 03:00h</div>
 
+
 <div class="flags text-center">
 	<div class="pull-left">
 	{{ home_team }}
 
-	<img src="flags/{{ home_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="USA" data-trigger="hover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+	<img src="flags/{{ home_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="{{ home_team }}" data-trigger="hover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
 	{{ home_goals }}
 
 	</div>
     <div class="pull-right">
 	{{ away_goals }}
-	<img src="flags/{{ away_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="USA" data-trigger="hover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+	<img src="flags/{{ away_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="{{ away_team }}" data-trigger="hover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
 	{{ away_team }}
 	</div>
 </div>
@@ -89,20 +90,37 @@ matches.forEach(function(match){
     }
 	var html    = template(context);
 	$("#body").append(html);
+	$('.flag_image').popover();
 });
 });
 </script>
 
 
 <div class="footer">
-	<p>© HackBulgaria 2014</p>
+	<p>© 2014</p>
 </div>
 
 </div>
 
 
 <script type="text/javascript">
-	$('.flag_image').popover();
+ // var all_results = $.ajax({
+ //   url: "http://worldcup.sfg.io/teams/results",
+
+ // }).done(function(data){
+ //   return data.filter(function(element, index, array){
+ //   		console.log(  element.country + " is in " + element.group_letter + " group. With "+ element.wins + " wins, "+element.losses+" loses and " + element.games_played+" games played." ); 
+ //   });
+ // });
+
+
+
+$.when( $.getJSON("http://worldcup.sfg.io/matches/today"), $.getJSON("http://worldcup.sfg.io/teams/results") ).done(function(matches, results) {
+
+	
+ 	console.log(matches);
+ 	console.log(results);
+});
 </script>
 </body>
 </html>
