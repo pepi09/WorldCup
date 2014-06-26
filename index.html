@@ -64,13 +64,13 @@
 	<div class="pull-left">
 	{{ home_team }}
 
-	<img src="flags/{{ code }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="USA" data-trigger="hover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-	1
+	<img src="flags/{{ home_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="USA" data-trigger="hover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+	{{ home_goals }}
 
 	</div>
     <div class="pull-right">
-	0
-	<img src="flags/{{ code }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="USA" data-trigger="hover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+	{{ away_goals }}
+	<img src="flags/{{ away_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="USA" data-trigger="hover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
 	{{ away_team }}
 	</div>
 </div>
@@ -80,11 +80,30 @@
 
 
 <script type="text/javascript">
-	var source   = $("#entry-template").html();
+
+$.ajax({
+  url: "http://worldcup.sfg.io/matches/today"
+}).done(function(matches){
+
+matches.forEach(function(match){
+// console.log(matches);
+    var homeTeam = match["home_team"];
+    var awayTeam = match["away_team"];
+
+    var source   = $("#entry-template").html();
 	var template = Handlebars.compile(source);
-	var context = {title: "My New Post", body: "This is my first post!"}
+	var context = {
+        home_team: homeTeam["country"],
+        away_team: awayTeam["country"],
+        home_goals: homeTeam["goals"],
+        away_goals: awayTeam["goals"],
+        home_flag: homeTeam["code"],
+        away_flag: awayTeam["code"],
+    }
 	var html    = template(context);
 	$("#body").append(html);
+});
+});
 </script>
 
 
