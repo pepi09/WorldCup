@@ -2,21 +2,77 @@
 <html>
 <head>
 
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<title>World Cup 2014</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 
-	<style type="text/css" src="bower_components/bootstrap/dist/css/bootstrap.css"></style>
+	<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+<style type="text/css">
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+.flags{
+	text-align: center;
+	height: 200px;
+}
+.minutes{
+	text-align: center;
+}
+</style>
 </head>
 <body>
+
+
 <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+        </ul>
+        <h3 class="text-muted">Hack Bulgaria World Cup</h3>
+      </div>
 
-<div class="pull-left col-xs-4"><h3>Hack Bulgaria World Cup</h3></div>
-<button class="pull-right btn btn-primary">Home</button>
+      <hr>
 
+<div class="jumbotron">
+        <div class="loader"></div>
+        <div class="minutes">Starts at: 03:00h</div>
+
+<div class="flags">
+	<div class="pull-left">
+	USA
+	<img src="flags/USA.png">
+	1 
+	</div>
+
+	<div class="pull-right">
+	0
+	<img src="flags/USA.png">
+	USA
+	</div>
+</div>
 
 </div>
+
+      
+
+      <div class="footer">
+        <p>© HackBulgaria 2014</p>
+      </div>
+
+    </div>
+
+
+
 </body>
 </html>
