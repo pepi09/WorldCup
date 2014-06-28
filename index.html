@@ -10,8 +10,9 @@
 
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-	<script type="text/javascript" src="bower_components/bootstrap/dist/js/tooltip.js"></script>
+	<script type="text/javascript" src="bower_components/bootstrap/js/tooltip.js"></script>
 	<script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+	<script type="text/javascript" src="bower_components/moment/moment.js"></script>
 
 	<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
@@ -48,17 +49,17 @@
 <div class="minutes text-center">Starts at: 03:00h</div>
 
 
+
 <div class="flags text-center">
 	<div class="pull-left">
 	{{ home_team }}
 
-	<img src="flags/{{ home_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="{{ home_team }}" data-trigger="hover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+	<img src="flags/{{ home_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="{{ home_team }}" data-trigger="hover" data-placement="left" data-content="{{ home_team_info }}">
 	{{ home_goals }}
-
 	</div>
     <div class="pull-right">
 	{{ away_goals }}
-	<img src="flags/{{ away_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="{{ away_team }}" data-trigger="hover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+	<img src="flags/{{ away_flag }}.png" class="flag_image" data-container="body" data-toggle="popover" data-title="{{ away_team }}" data-trigger="hover" data-placement="right" data-content="{{ away_team_info }}">
 	{{ away_team }}
 	</div>
 </div>
@@ -67,33 +68,7 @@
 </script>
 
 
-<script type="text/javascript">
-
-$.ajax({
-  url: "http://worldcup.sfg.io/matches/today"
-}).done(function(matches){
-
-matches.forEach(function(match){
-// console.log(matches);
-    var homeTeam = match["home_team"];
-    var awayTeam = match["away_team"];
-
-    var source   = $("#entry-template").html();
-	var template = Handlebars.compile(source);
-	var context = {
-        home_team: homeTeam["country"],
-        away_team: awayTeam["country"],
-        home_goals: homeTeam["goals"],
-        away_goals: awayTeam["goals"],
-        home_flag: homeTeam["code"],
-        away_flag: awayTeam["code"],
-    }
-	var html    = template(context);
-	$("#body").append(html);
-	$('.flag_image').popover();
-});
-});
-</script>
+<script type="text/javascript" src="app.js"></script>
 
 
 <div class="footer">
@@ -101,26 +76,5 @@ matches.forEach(function(match){
 </div>
 
 </div>
-
-
-<script type="text/javascript">
- // var all_results = $.ajax({
- //   url: "http://worldcup.sfg.io/teams/results",
-
- // }).done(function(data){
- //   return data.filter(function(element, index, array){
- //   		console.log(  element.country + " is in " + element.group_letter + " group. With "+ element.wins + " wins, "+element.losses+" loses and " + element.games_played+" games played." ); 
- //   });
- // });
-
-
-
-$.when( $.getJSON("http://worldcup.sfg.io/matches/today"), $.getJSON("http://worldcup.sfg.io/teams/results") ).done(function(matches, results) {
-
-	
- 	console.log(matches);
- 	console.log(results);
-});
-</script>
 </body>
 </html>
