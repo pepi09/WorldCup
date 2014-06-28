@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<script type="text/javascript" src="bower_components/bootstrap/dist/js/tooltip.js"></script>
 	<script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+    <script type="text/javascript" src="bower_components/moment/moment.js"></script>
 
 	<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
@@ -81,7 +82,6 @@ matches.forEach(function(match){
 
     var homeTeam = match["home_team"];
     var awayTeam = match["away_team"];
-    var start_time = "Match starts at: 13:00h"
 
     var source   = $("#entry-template").html();
 	var template = Handlebars.compile(source);
@@ -92,20 +92,13 @@ matches.forEach(function(match){
         away_goals: awayTeam["goals"],
         home_flag: homeTeam["code"],
         away_flag: awayTeam["code"],
-        start_time : start_time,
+        start_time : "Match starts at: " + timing(match["datetime"], match["status"]) + "h"
     }
 	var html    = template(context);
 	$("#body").append(html);
 }
 else {
-    today = new Date();
-    today = today.toJSON();
-    var now = Date.parse(today);
 
-    var match_time = Date.parse(match["datetime"]);
-    console.log(match_time);
-    var end_time = (match_time + 5400000) - now;
-    console.log(end_time);
 
 
     var homeTeam = match["home_team"];
@@ -128,6 +121,25 @@ else {
 }
 });
 });
+
+//function that takes the datetime and the staus  value and return the start time or left minutes for the match
+var timing = function(time, status) {
+    var start_time = moment(time).format("Hmm"),
+        now = moment().format("H:mm");
+    if ( status === "future"){
+        var time_left = 9000 - (parseInt(now.split(':').join(),10) - parseInt(start_time,10));
+        //add('m', 90).toArray().join();
+        console.log(time_left);
+
+        return start_time;
+    }
+    else{
+        var time_left = parseInt(start_time.add('m', 90).toArray().join(),10);
+        console.log(time_left);
+        return time_left;
+    }
+
+}
 </script>
 
 
