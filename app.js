@@ -52,12 +52,7 @@ matches.forEach(function(match){
       awayTeam = match["away_team"],
       html;
 
-
-  if (match["status"] === "future"){
-
-  $(".progress progress-striped").remove();
-
-  context = {
+context = {
         home_team: match["home_team"],
         away_team: match["away_team"],
         home_goals: match["home_goals"],
@@ -70,25 +65,8 @@ matches.forEach(function(match){
     };
     html    = template(context);
   $("#body").append(html);
-}
-else {
-    context = {
-        home_team: match["home_team"],
-        away_team: match["away_team"],
-        home_goals: match["home_goals"],
-        away_goals: match["away_goals"],
-        home_flag: match["home_flag"],
-        away_flag: match["away_flag"],
-        home_team_info: match["home_team_info"],
-        away_team_info: match["away_team_info"],
-        start_time : start_time,
-      };
-    html = template(context);
-    $("#body").append(html);
-}
-  $('.flag_image').popover();
-
 });
+  $('.flag_image').popover();
 });
 
 var timing = function(time, status) {
@@ -100,9 +78,10 @@ var timing = function(time, status) {
         return start_time;
     }
     else{
-        time_left = parseInt(start_time.add('m', 90).toArray().join(),10);
-        console.log(time_left);
-        return time_left;
+        // time_left = parseInt(start_time.add('m', 90).toArray().join(),10);
+        // console.log(time_left);
+        // return time_left;
+        return start_time;
     }
 
 };
