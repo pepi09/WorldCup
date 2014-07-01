@@ -50,13 +50,16 @@ matches.forEach(function(match){
       context = {},
       homeTeam = match["home_team"],
       awayTeam = match["away_team"],
-      html;
+      html,
+      match_has_started = match["status"] != "future",
+      home_result = match_has_started ? match["home_goals"] : "",
+      away_result = match_has_started ? match["away_goals"] : "";
 
 context = {
         home_team: match["home_team"],
         away_team: match["away_team"],
-        home_goals: match["home_goals"],
-        away_goals: match["away_goals"],
+        home_goals: home_result,
+        away_goals: away_result,
         home_flag: match["home_flag"],
         away_flag: match["away_flag"],
         home_team_info: match["home_team_info"],
@@ -64,7 +67,7 @@ context = {
         start_time : timing(match["time"], match["status"]),
         per : timing(match["time"], match["status"]),
     };
-    html    = template(context);
+    html  = template(context);
   $("#body").append(html);
 });
   $('.flag_image').popover();
