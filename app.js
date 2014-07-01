@@ -61,7 +61,8 @@ context = {
         away_flag: match["away_flag"],
         home_team_info: match["home_team_info"],
         away_team_info: match["away_team_info"],
-        start_time : "Match starts at: " + timing(match["time"], match["status"]) + "h",
+        start_time : timing(match["time"], match["status"]),
+        per : timing(match["time"], match["status"]),
     };
     html    = template(context);
   $("#body").append(html);
@@ -70,18 +71,27 @@ context = {
 });
 
 var timing = function(time, status) {
-    var start_time = moment(time).format("H:mm"),
-        now = moment().format("H:mm"),
-        time_left;
-        console.log(start_time);
+    var start_time = new Date(time),
+        now = new Date();
+    $(".progress").toggle();
     if ( status === "future"){
-        return start_time;
+        $(".progress").toggle();
+        return "Match starts at: " + moment(time).format("H:mm") + "h";
     }
     else{
-        // time_left = parseInt(start_time.add('m', 90).toArray().join(),10);
-        // console.log(time_left);
-        // return time_left;
-        return start_time;
+      $(".progress").toggle();
+        start = start_time.getTime();
+        var current = now.getTime(),
+        current_time = (current - start)/ 60000;
+        if (current_time <= 45){
+          return  current_time.toFixed();
+        }
+        else if(current_time > 45 && current_time <= 60) {
+          return (current_time - (current_time - 45)).toFixed();
+        }
+        else {
+          return (current_time - 15).toFixed();
+        }
     }
 
 };
