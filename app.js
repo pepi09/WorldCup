@@ -7,7 +7,7 @@ var get_today_matches = function( cb ){
 
   var team_info_generator = function(info){
     return info.country+" is in "+info.group_letter+" group. With "+info.wins+" wins, "+info.losses+" losses and "+info.games_played+" games played.";
-  }
+  };
 
 $.when( $.getJSON("http://worldcup.sfg.io/matches/today"), $.getJSON("http://worldcup.sfg.io/teams/results") )
   .done(function(matches, results) {
@@ -35,27 +35,44 @@ today_matches[index] = {
   status: element.status,
   home_team_info: home_team_info,
   away_team_info: away_team_info
-}
+};
 });
 cb(today_matches);
 });
-}
+};
 
 
 get_today_matches(function(matches){
 
-console.log(matches);
-
-
 matches.forEach(function(match){
-    if (match["status"] === "future"){
+  var source   = $("#entry-template").html(),
+      template = Handlebars.compile(source),
+      context = {},
+      homeTeam = match["home_team"],
+      awayTeam = match["away_team"],
+      html;
 
 
-    var start_time = "Match starts at: 13:00h"
+  if (match["status"] === "future"){
 
-    var source   = $("#entry-template").html();
-  var template = Handlebars.compile(source);
-  var context = {
+  $(".progress progress-striped").remove();
+
+  context = {
+        home_team: match["home_team"],
+        away_team: match["away_team"],
+        home_goals: match["home_goals"],
+        away_goals: match["away_goals"],
+        home_flag: match["home_flag"],
+        away_flag: match["away_flag"],
+        home_team_info: match["home_team_info"],
+        away_team_info: match["away_team_info"],
+        start_time : "Match starts at: " + timing(match["time"], match["status"]) + "h",
+    };
+    html    = template(context);
+  $("#body").append(html);
+}
+else {
+    context = {
         home_team: match["home_team"],
         away_team: match["away_team"],
         home_goals: match["home_goals"],
@@ -65,40 +82,27 @@ matches.forEach(function(match){
         home_team_info: match["home_team_info"],
         away_team_info: match["away_team_info"],
         start_time : start_time,
-    }
-  var html    = template(context);
-  $("#body").append(html);
-}
-else {
-    today = new Date();
-    today = today.toJSON();
-    var now = Date.parse(today);
-
-    var match_time = Date.parse(match["datetime"]);
-    // console.log(match_time);
-    var end_time = (match_time + 5400000) - now;
-    // console.log(end_time);
-
-
-    var homeTeam = match["home_team"];
-    var awayTeam = match["away_team"];
-
-    var source   = $("#entry-template").html();
-    var template = Handlebars.compile(source);
-    var context = {
-        home_team: homeTeam["country"],
-        away_team: awayTeam["country"],
-        home_goals: homeTeam["goals"],
-        away_goals: awayTeam["goals"],
-        home_flag: homeTeam["code"],
-        away_flag: awayTeam["code"],
-        match_progress : end_time,
-
-    }
-    var html    = template(context);
+      };
+    html = template(context);
     $("#body").append(html);
 }
   $('.flag_image').popover();
 
 });
 });
+
+var timing = function(time, status) {
+    var start_time = moment(time).format("H:mm"),
+        now = moment().format("H:mm"),
+        time_left;
+        console.log(start_time);
+    if ( status === "future"){
+        return start_time;
+    }
+    else{
+        time_left = parseInt(start_time.add('m', 90).toArray().join(),10);
+        console.log(time_left);
+        return time_left;
+    }
+
+};
