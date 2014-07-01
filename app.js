@@ -76,13 +76,13 @@ context = {
 var timing = function(time, status) {
     var start_time = new Date(time),
         now = new Date();
-    $(".progress").toggle();
     if ( status === "future"){
-        $(".progress").toggle();
+
+        $(".progress").hide();
         return "Match starts at: " + moment(time).format("H:mm") + "h";
     }
-    else{
-      $(".progress").toggle();
+    else if (status == "in progress") {
+      $(".progress").show();
         start = start_time.getTime();
         var current = now.getTime(),
         current_time = (current - start)/ 60000;
@@ -95,6 +95,10 @@ var timing = function(time, status) {
         else {
           return (current_time - 15).toFixed();
         }
+    }
+    else {
+      $(".progress").hide();
+      return "The match has finished. This is the final result!";
     }
 
 };
