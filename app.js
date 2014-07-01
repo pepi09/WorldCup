@@ -55,7 +55,6 @@ matches.forEach(function(match){
       home_result = match_has_started ? match["home_goals"] : "",
       away_result = match_has_started ? match["away_goals"] : "";
 
-
 context = {
         home_team: match["home_team"],
         away_team: match["away_team"],
