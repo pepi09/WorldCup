@@ -9,7 +9,7 @@ var get_today_matches = function( cb ){
     return info.country+" is in "+info.group_letter+" group. With "+info.wins+" wins, "+info.losses+" losses and "+info.games_played+" games played.";
   };
 
-$.when( $.getJSON("http://worldcup.sfg.io/matches/today"), $.getJSON("http://worldcup.sfg.io/teams/results") )
+$.when( $.getJSON("http://worldcup.sfg.io/matches"), $.getJSON("http://worldcup.sfg.io/teams/results") )
   .done(function(matches, results) {
 
 matches[0].forEach(function(element, index){
